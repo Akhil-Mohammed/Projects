@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <form id="urlForm">
+            <input type="text" id="longUrl" name="url" placeholder="Enter long URL" required>
+            <button type="submit">Shorten URL</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const longUrl = document.getElementById('longUrl').value;
+            const response = await fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(longUrl)}`,
+            });
+            const resultText = await response.text();
+            document.getElementById('result').innerHTML = resultText;
+        });
+    </script>
+</body>
+</html>
